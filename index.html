@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Card Table Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <header class="brand">
+          <div>
+            <h1>Card Table</h1>
+            <p>画像デッキ汎用シミュレーター</p>
+          </div>
+          <button id="resetTable" class="icon-button" title="卓をリセット" aria-label="卓をリセット">↺</button>
+        </header>
+
+        <section class="panel import-panel">
+          <label id="dropZone" class="drop-zone" for="cardFiles">
+            <input id="cardFiles" type="file" accept="image/*" multiple>
+            <span class="drop-title">画像を読み込む</span>
+            <span class="drop-copy">カード画像を選択、またはここへドロップ</span>
+          </label>
+          <div class="control-grid">
+            <button id="shuffleDeck" type="button">シャッフル</button>
+            <button id="drawOne" type="button">1枚引く</button>
+            <button id="startGame" type="button">ゲーム開始</button>
+            <button id="returnAll" type="button">全て山札へ</button>
+          </div>
+        </section>
+
+        <section class="panel settings-panel">
+          <label>
+            表示サイズ
+            <input id="cardSize" type="range" min="84" max="180" value="122">
+          </label>
+          <label class="check-line">
+            <input id="showNames" type="checkbox" checked>
+            <span>ファイル名を表示</span>
+          </label>
+        </section>
+
+        <section class="panel library-panel">
+          <div class="panel-header">
+            <h2>読み込みカード</h2>
+            <span id="libraryCount">0</span>
+          </div>
+          <div id="cardLibrary" class="thumbnail-grid"></div>
+        </section>
+      </aside>
+
+      <main class="table">
+        <section class="zone deck-zone" aria-labelledby="deckTitle">
+          <div class="zone-header">
+            <h2 id="deckTitle">山札</h2>
+            <span id="topCardName">未読み込み</span>
+          </div>
+          <button id="deckStack" class="deck-stack" type="button" aria-label="山札から1枚引く">
+            <span class="deck-back"></span>
+            <span class="deck-count-large">0</span>
+          </button>
+          <div class="deck-tools">
+            <label>
+              上から
+              <input id="revealCount" type="number" min="1" value="3">
+            </label>
+            <button id="revealTop" type="button">表にする</button>
+            <button id="returnRevealedBottom" type="button">順番で下へ</button>
+            <button id="shuffleRevealedBottom" type="button">シャッフルして下へ</button>
+          </div>
+          <div id="revealedCards" class="revealed-grid"></div>
+        </section>
+
+        <section class="zone field-zone droppable" data-zone="field" aria-labelledby="fieldTitle">
+          <div class="zone-header">
+            <h2 id="fieldTitle">場 3 x 3</h2>
+            <span>9枠にドラッグで配置</span>
+          </div>
+          <div id="fieldCards" class="field-grid"></div>
+        </section>
+
+        <section class="zone resource-zone droppable" data-zone="resource" aria-labelledby="resourceTitle">
+          <div class="zone-header">
+            <h2 id="resourceTitle">リソース</h2>
+            <span>カードを1枚ずつ並べる</span>
+          </div>
+          <div id="resourceCards" class="card-grid resource-grid"></div>
+        </section>
+
+        <section class="zone hand-zone droppable" data-zone="hand" aria-labelledby="handTitle">
+          <div class="zone-header">
+            <h2 id="handTitle">手札</h2>
+            <span>カードをクリックすると場へ</span>
+          </div>
+          <div id="handCards" class="card-grid"></div>
+        </section>
+
+        <section class="zone discard-zone droppable" data-zone="discard" aria-labelledby="discardTitle">
+          <div class="zone-header">
+            <h2 id="discardTitle">捨て札</h2>
+            <span>右下ボタンで捨て札へ</span>
+          </div>
+          <div id="discardCards" class="card-grid compact"></div>
+        </section>
+      </main>
+    </div>
+
+    <template id="cardTemplate">
+      <article class="card" draggable="true">
+        <button class="card-move primary" type="button" title="次のゾーンへ">→</button>
+        <button class="card-move discard" type="button" title="捨て札へ">×</button>
+        <img alt="">
+        <p></p>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
